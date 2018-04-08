@@ -1,11 +1,9 @@
 package paint.gui;
 
+import paint.gui.ColorDialog;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import paint.gui.ColorDialog;
 
 public class Window {
 	private JButton lineButton;
@@ -14,15 +12,20 @@ public class Window {
 	private JButton backgroundColorButton;
 	private JButton brushColorButton;
 	private JPanel canvasPanel;
+	public JPanel contentPane;
 
 	private Color brushColor = Color.black;
 
 	public Window() {
 		backgroundColorButton.addActionListener(e -> {
-			canvasPanel.setBackground(ColorDialog.getColor());
+			Color color = ColorDialog.getColor();
+			if(color != null)
+				canvasPanel.setBackground(color);
 		});
 		brushColorButton.addActionListener(e -> {
-			brushColor = ColorDialog.getColor();
+			Color color = ColorDialog.getColor();
+			if(color != null)
+				brushColor = color;
 		});
 	}
 }
