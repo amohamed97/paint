@@ -2,40 +2,29 @@ package paint.model;
 
 import java.awt.*;
 
-abstract public class Shape {
+abstract public class Shape implements Drawable {
 
     private Color color;
+    private Color fillColor;
 
+    abstract void setPosition(int x,int y);
 
-    void draw(Graphics canvas){
-
-    }
-
-    void setPosition(Point position){
-
-    }
-
-    Point getPosition(){
-        return null;
-
-    }
+    abstract Point getPosition();
 
     Color getColor(){
-
-        return null;
+        return color;
     }
 
     void setColor(Color color){
-
+        this.color=color;
     }
 
     void setFillColor(Color color){
-
+        this.fillColor=color;
     }
 
     Color getFillColor(){
-
-        return null;
+        return fillColor;
     }
 
     void cloneShape(){

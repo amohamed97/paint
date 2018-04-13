@@ -11,7 +11,7 @@ public class Window {
 	private JButton ellipseButton;
 	private JButton backgroundColorButton;
 	private JButton brushColorButton;
-	private JPanel canvasPanel;
+	public JPanel canvasPanel;
 	public JPanel contentPane;
 
 	private Color brushColor = Color.black;
