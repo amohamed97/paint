@@ -8,6 +8,11 @@ import java.awt.*;
 public class Canvas extends JPanel {
     Engine engine;
 
+    Canvas(){
+        super();
+        setBackground(Color.WHITE);
+    }
+
     public void setEngine(Engine engine){
         this.engine = engine;
     }

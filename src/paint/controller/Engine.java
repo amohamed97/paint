@@ -3,20 +3,21 @@ package paint.controller;
 import paint.model.Shape;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Engine {
-    Shape[] shapes = {};
+    ArrayList<Shape> shapes = new ArrayList<Shape>();
 
     public void refresh(Graphics g) {
-        Arrays.stream(shapes).forEach(s -> s.draw(g));
+        shapes.forEach(s -> s.draw(g));
     }
 
     public void addShape(Shape shape) {
-        shapes[shapes.length] = shape;
+        shapes.add(shape);
     }
 
     public Shape[] getShapes() {
-        return shapes;
+        return (Shape[]) shapes.toArray();
     }
 }
