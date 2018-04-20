@@ -1,6 +1,7 @@
 package paint.gui;
 
 import paint.controller.Engine;
+import paint.model.Ellipse;
 import paint.model.Polyline;
 
 import javax.swing.*;
@@ -48,10 +49,32 @@ public class Window {
                 startY = e.getY();
             }
 
+            @Override
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
+                paint.model.Shape newShape;
+                int endX = e.getX();
+                int endY = e.getY();
                 if(actionCommand.equals("Line"))
-                    engine.addShape(new Polyline(new int[]{startX, e.getX()}, new int[]{startY, e.getY()}));
+                    newShape = new Polyline(new int[]{startX, endX}, new int[]{startY, endY});
+                else if(actionCommand.equals("Ellipse")) {
+                    if(endX < startX){
+                        int tmp = startX;
+                        startX = endX;
+                        endX = tmp;
+                    }
+                    if(endY < startY){
+                        int tmp = startY;
+                        startY = endY;
+                        endY = tmp;
+                    }
+                    newShape = new Ellipse(startX, startY, endX - startX, endY - startY);
+                }else if(actionCommand.equals("Rectangle")) {
+                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
+                            new int[]{startY, startY, endY, endY});
+                }else
+                    throw new UnsupportedOperationException();
+                engine.addShape(newShape);
                 canvasPanel.repaint();
             }
         };
