@@ -53,11 +53,6 @@ public class Window {
             };
 
             @Override
-            public void mouseReleased(MouseEvent e){
-                super.mouseReleased(e);
-            }
-
-            @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
                 int endX = e.getX();
@@ -91,16 +86,27 @@ public class Window {
             }
         };
 
+        MouseAdapter selector = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                engine.selectShape(e.getPoint());
+                canvasPanel.repaint();
+            }
+        };
+
         ActionListener modeChanged = e -> {
             actionCommand = e.getActionCommand();
             if(actionCommand.equals("Select")){
                 canvasPanel.setCursor(Cursor.getDefaultCursor());
+                canvasPanel.addMouseListener(selector);
                 canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.removeMouseListener(shaper);
             } else {
                 canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 canvasPanel.addMouseMotionListener(shaper);
                 canvasPanel.addMouseListener(shaper);
+                canvasPanel.removeMouseListener(selector);
             }
         };
         selectToggleButton.addActionListener(modeChanged);

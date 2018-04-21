@@ -1,6 +1,7 @@
 package paint.model;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
 
 public class Ellipse extends Shape {
@@ -29,8 +30,6 @@ public class Ellipse extends Shape {
         g.drawOval(x,y,width,height);
     }
 
-
-
     @Override
     void setPosition(int x, int y) {
         Point p=getPosition();
@@ -38,8 +37,17 @@ public class Ellipse extends Shape {
         int yDiff=y - (int) p.getY();
     }
 
-    Point getPosition(){
+    public Point getPosition(){
         Point p=new Point(this.x,y);
         return p;
     }
+
+    public Point getBottomRight(){
+        return new Point(this.x + width, this.y + height);
+    }
+
+    public boolean contains(Point point){
+        return (new Ellipse2D.Float(x, y, width, height)).contains(point);
+    }
+
 }

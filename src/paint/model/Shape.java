@@ -9,7 +9,9 @@ abstract public class Shape implements Drawable {
 
     abstract void setPosition(int x,int y);
 
-    abstract Point getPosition();
+    abstract public Point getPosition();
+
+    abstract public Point getBottomRight();
 
     Color getColor(){
         return color;
@@ -31,5 +33,6 @@ abstract public class Shape implements Drawable {
 
     }
 
+    abstract public boolean contains(Point point);
 
 }

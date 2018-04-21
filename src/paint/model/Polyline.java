@@ -1,6 +1,7 @@
 package paint.model;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,13 +30,19 @@ public class Polyline extends Shape {
         this.y=Arrays.stream(this.y).map(n->n+yDiff).toArray();
     }
 
-    Point getPosition(){
+    public Point getPosition(){
         int minX= Arrays.stream(this.x).min().getAsInt();
         int minY= Arrays.stream(this.y).min().getAsInt();
         Point p=new Point(minX,minY);
         return p;
     }
 
+    public Point getBottomRight(){
+        int maxX= Arrays.stream(this.x).max().getAsInt();
+        int maxY= Arrays.stream(this.y).max().getAsInt();
+        Point p=new Point(maxX,maxY);
+        return p;
+    }
 
     @Override
     public void draw(Graphics g){
@@ -44,4 +51,8 @@ public class Polyline extends Shape {
         g.drawPolygon(pol);
     }
 
+    @Override
+    public boolean contains(Point point) {
+        return (new Polygon(x, y, x.length)).contains(point);
+    }
 }
