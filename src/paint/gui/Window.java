@@ -23,7 +23,6 @@ public class Window {
     private JToggleButton selectToggleButton;
     private String actionCommand;
     private int startX, startY;
-    paint.model.Shape newShape;
 
 
     private Color brushColor = Color.black;
@@ -41,47 +40,53 @@ public class Window {
 		});
         canvasPanel.setEngine(engine);
 
-
-        MouseMotionAdapter motion = new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int endX = e.getX();
-                int endY = e.getY();
-                if(actionCommand.equals("Line"))
-                    newShape = new Polyline(new int[]{startX, endX}, new int[]{startY, endY});
-                else if(actionCommand.equals("Ellipse")) {
-                    if(endX < startX){
-                        int tmp = startX;
-                        startX = endX;
-                        endX = tmp;
-                    }
-                    if(endY < startY){
-                        int tmp = startY;
-                        startY = endY;
-                        endY = tmp;
-                    }
-                    newShape = new Ellipse(startX, startY, endX - startX, endY - startY);
-                }else if(actionCommand.equals("Rectangle")) {
-                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
-                            new int[]{startY, startY, endY, endY});
-                }else
-                    throw new UnsupportedOperationException();
-                engine.clearShapes();
-                engine.addShape(newShape);
-                canvasPanel.repaint();
-            }
-        };
         MouseAdapter shaper = new MouseAdapter() {
+            int startX, startY;
+            paint.model.Shape newShape;
+
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 startX = e.getX();
                 startY = e.getY();
+                newShape = null;
             };
 
             @Override
             public void mouseReleased(MouseEvent e){
+                super.mouseReleased(e);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                int endX = e.getX();
+                int endY = e.getY();
+                if(newShape != null)
+                    engine.removeLastShape();
+                if(actionCommand.equals("Line"))
+                    newShape = new Polyline(new int[]{startX, endX}, new int[]{startY, endY});
+                else if(actionCommand.equals("Ellipse")) {
+                    int leftX = startX;
+                    int topY = startY;
+                    if(endX < leftX){
+                        int tmp = leftX;
+                        leftX = endX;
+                        endX = tmp;
+                    }
+                    if(endY < topY){
+                        int tmp = topY;
+                        topY = endY;
+                        endY = tmp;
+                    }
+                    newShape = new Ellipse(leftX, topY, endX - leftX, endY - topY);
+                }else if(actionCommand.equals("Rectangle")) {
+                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
+                            new int[]{startY, startY, endY, endY});
+                }else
+                    throw new UnsupportedOperationException();
                 engine.addShape(newShape);
+                canvasPanel.repaint();
             }
         };
 
@@ -89,11 +94,12 @@ public class Window {
             actionCommand = e.getActionCommand();
             if(actionCommand.equals("Select")){
                 canvasPanel.setCursor(Cursor.getDefaultCursor());
+                canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.removeMouseListener(shaper);
             } else {
                 canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                canvasPanel.addMouseMotionListener(shaper);
                 canvasPanel.addMouseListener(shaper);
-                canvasPanel.addMouseMotionListener(motion);
             }
         };
         selectToggleButton.addActionListener(modeChanged);
