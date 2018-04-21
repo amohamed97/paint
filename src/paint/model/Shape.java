@@ -4,8 +4,8 @@ import java.awt.*;
 
 abstract public class Shape implements Drawable {
 
-    private Color color;
-    private Color fillColor;
+    protected Color color;
+    protected Color fillColor;
 
     abstract void setPosition(int x,int y);
 
@@ -15,7 +15,7 @@ abstract public class Shape implements Drawable {
         return color;
     }
 
-    void setColor(Color color){
+    public void setColor(Color color){
         this.color=color;
     }
 

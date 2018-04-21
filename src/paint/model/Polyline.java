@@ -39,6 +39,7 @@ public class Polyline extends Shape {
 
     @Override
     public void draw(Graphics g){
+        g.setColor(color);
         Polygon pol=new Polygon(x,y,this.x.length);
         g.drawPolygon(pol);
     }

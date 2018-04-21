@@ -25,6 +25,7 @@ public class Ellipse extends Shape {
 
     @Override
     public void draw(Graphics g){
+        g.setColor(color);
         g.drawOval(x,y,width,height);
     }
 

@@ -85,6 +85,7 @@ public class Window {
                             new int[]{startY, startY, endY, endY});
                 }else
                     throw new UnsupportedOperationException();
+                newShape.setColor(brushColor);
                 engine.addShape(newShape);
                 canvasPanel.repaint();
             }
