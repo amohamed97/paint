@@ -9,7 +9,6 @@ public class Engine {
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     public void clearShapes() {
         if(shapes.isEmpty()){
-
         }
         else{
             shapes.remove(shapes.size()-1);
