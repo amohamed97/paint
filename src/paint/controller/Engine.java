@@ -49,4 +49,9 @@ public class Engine {
         }
     }
 
+    public void deleteShape(){
+        shapes.remove(selected);
+        selected=-1;
+    }
+
 }

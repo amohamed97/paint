@@ -7,10 +7,7 @@ import paint.model.Shape;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
 public class Window {
 	private JToggleButton lineToggleButton;
@@ -22,6 +19,7 @@ public class Window {
     private Engine engine = new Engine();
     private Canvas canvasPanel;
     private JToggleButton selectToggleButton;
+    private JButton deleteButton;
     private String actionCommand;
     private int startX, startY;
 
@@ -29,6 +27,7 @@ public class Window {
     private Color brushColor = Color.black;
 
 	public Window() {
+
 		backgroundColorButton.addActionListener(e -> {
 			Color color = ColorDialog.getColor();
 			if(color != null)
@@ -144,5 +143,12 @@ public class Window {
         lineToggleButton.addActionListener(modeChanged);
         ellipseToggleButton.addActionListener(modeChanged);
         rectangleToggleButton.addActionListener(modeChanged);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                engine.deleteShape();
+                canvasPanel.repaint();
+            }
+        });
     }
 }

@@ -7,6 +7,7 @@ import paint.gui.Window;
 public class Main {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Paint");
+		frame.setSize(800,100);
 		frame.setContentPane(new Window().contentPane);
 		frame.pack();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
