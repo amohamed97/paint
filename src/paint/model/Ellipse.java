@@ -50,4 +50,13 @@ public class Ellipse extends Shape {
         return (new Ellipse2D.Float(x, y, width, height)).contains(point);
     }
 
+    public void move(int xDiff,int yDiff){
+        this.x+=xDiff;
+        this.y+=yDiff;
+    }
+
+    @Override
+    public void delete() {
+
+    }
 }

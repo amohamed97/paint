@@ -44,6 +44,17 @@ public class Polyline extends Shape {
         return p;
     }
 
+    public void move(int xDiff, int yDiff){
+
+        this.x=Arrays.stream(this.x).map(n->n+xDiff).toArray();
+        this.y=Arrays.stream(this.y).map(n->n+yDiff).toArray();
+
+    }
+
+    @Override
+    public void delete() {
+    }
+
     @Override
     public void draw(Graphics g){
         g.setColor(color);

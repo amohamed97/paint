@@ -3,6 +3,7 @@ package paint.gui;
 import paint.controller.Engine;
 import paint.model.Ellipse;
 import paint.model.Polyline;
+import paint.model.Shape;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,10 @@ public class Window {
 				brushColor = color;
 		});
         canvasPanel.setEngine(engine);
+
+
+
+
 
         MouseAdapter shaper = new MouseAdapter() {
             int startX, startY;
@@ -87,10 +92,34 @@ public class Window {
         };
 
         MouseAdapter selector = new MouseAdapter() {
+            int x, y;
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 engine.selectShape(e.getPoint());
+                canvasPanel.repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                x = e.getX();
+                y = e.getY();
+                System.out.println("Pressed");
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent mouseEvent) {
+                System.out.println("Dragging");
+                int newX,newY,yDiff,xDiff;
+                super.mouseDragged(mouseEvent);
+                newX=mouseEvent.getX();
+                newY=mouseEvent.getY();
+                xDiff=newX-x;
+                yDiff=newY-y;
+                x=newX;
+                y=newY;
+                engine.moveShape(xDiff,yDiff);
                 canvasPanel.repaint();
             }
         };
@@ -100,6 +129,7 @@ public class Window {
             if(actionCommand.equals("Select")){
                 canvasPanel.setCursor(Cursor.getDefaultCursor());
                 canvasPanel.addMouseListener(selector);
+                canvasPanel.addMouseMotionListener(selector);
                 canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.removeMouseListener(shaper);
             } else {
@@ -107,6 +137,7 @@ public class Window {
                 canvasPanel.addMouseMotionListener(shaper);
                 canvasPanel.addMouseListener(shaper);
                 canvasPanel.removeMouseListener(selector);
+                canvasPanel.removeMouseMotionListener(selector);
             }
         };
         selectToggleButton.addActionListener(modeChanged);

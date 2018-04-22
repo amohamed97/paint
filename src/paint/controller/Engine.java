@@ -23,6 +23,7 @@ public class Engine {
             g.setColor(Color.BLUE);
             g.drawRect(new Double(pos.getX()).intValue(), new Double(pos.getY()).intValue(),
                     new Double(end.getX() - pos.getX()).intValue(), new Double(end.getY() - pos.getY()).intValue());
+            System.out.println("Refreshing");
         }
     }
 
@@ -41,4 +42,11 @@ public class Engine {
             }
         selected = -1;
     }
+
+    public void moveShape(int diffX,int diffY){
+        if(selected !=-1) {
+            shapes.get(selected).move(diffX, diffY);
+        }
+    }
+
 }
