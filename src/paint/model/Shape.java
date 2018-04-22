@@ -2,7 +2,7 @@ package paint.model;
 
 import java.awt.*;
 
-abstract public class Shape implements Drawable {
+abstract public class Shape{
 
     protected Color color;
     protected Color fillColor;
@@ -33,6 +33,7 @@ abstract public class Shape implements Drawable {
 
     }
 
+    abstract public void draw(Graphics g);
 
     public abstract void move(int x,int y);
     public abstract void delete();
