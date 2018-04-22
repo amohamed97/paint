@@ -35,6 +35,7 @@ public class Ellipse extends Shape {
         Point p=getPosition();
         int xDiff=x - (int) p.getX();
         int yDiff=y - (int) p.getY();
+        move(xDiff, yDiff);
     }
 
     public Point getPosition(){

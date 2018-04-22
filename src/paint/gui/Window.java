@@ -104,12 +104,10 @@ public class Window {
                 super.mousePressed(e);
                 x = e.getX();
                 y = e.getY();
-                System.out.println("Pressed");
             }
 
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
-                System.out.println("Dragging");
                 int newX,newY,yDiff,xDiff;
                 super.mouseDragged(mouseEvent);
                 newX=mouseEvent.getX();
@@ -143,12 +141,9 @@ public class Window {
         lineToggleButton.addActionListener(modeChanged);
         ellipseToggleButton.addActionListener(modeChanged);
         rectangleToggleButton.addActionListener(modeChanged);
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        deleteButton.addActionListener(e -> {
                 engine.deleteShape();
                 canvasPanel.repaint();
-            }
         });
     }
 }

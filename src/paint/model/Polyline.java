@@ -26,8 +26,7 @@ public class Polyline extends Shape {
         Point p=getPosition();
         int xDiff=x - (int) p.getX();
         int yDiff=y - (int) p.getY();
-        this.x=Arrays.stream(this.x).map(n->n+xDiff).toArray();
-        this.y=Arrays.stream(this.y).map(n->n+yDiff).toArray();
+        move(xDiff, yDiff);
     }
 
     public Point getPosition(){
