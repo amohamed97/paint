@@ -108,18 +108,16 @@ public class Window {
 
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
-                int newX,newY,yDiff,xDiff;
+                int newX, newY, yDiff, xDiff;
                 super.mouseDragged(mouseEvent);
-                if(engine.containsSelected(mouseEvent.getPoint())) {
-                    newX = mouseEvent.getX();
-                    newY = mouseEvent.getY();
-                    xDiff = newX - x;
-                    yDiff = newY - y;
-                    x = newX;
-                    y = newY;
-                    engine.moveShape(xDiff, yDiff);
-                    canvasPanel.repaint();
-                }
+                newX = mouseEvent.getX();
+                newY = mouseEvent.getY();
+                xDiff = newX - x;
+                yDiff = newY - y;
+                x = newX;
+                y = newY;
+                engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
+                canvasPanel.repaint();
             }
 
             @Override
@@ -141,10 +139,14 @@ public class Window {
                 canvasPanel.removeMouseListener(shaper);
             } else {
                 canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.addMouseMotionListener(shaper);
+                canvasPanel.removeMouseListener(shaper);
                 canvasPanel.addMouseListener(shaper);
                 canvasPanel.removeMouseListener(selector);
                 canvasPanel.removeMouseMotionListener(selector);
+                engine.unselect();
+                canvasPanel.repaint();
             }
         };
         selectToggleButton.addActionListener(modeChanged);
