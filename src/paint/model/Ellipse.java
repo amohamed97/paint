@@ -63,9 +63,8 @@ public class Ellipse extends Shape {
         this.y+=yDiff;
     }
 
-    @Override
-    public void delete() {
-
-
+    public void resize(int x, int y){
+        this.width = x - this.x;
+        this.height = y - this.y;
     }
 }

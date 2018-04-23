@@ -34,7 +34,8 @@ abstract public class Shape{
     abstract public void draw(Graphics g);
 
     public abstract void move(int x,int y);
-    public abstract void delete();
+
+    public abstract void resize(int x, int y);
 
     abstract public boolean contains(Point point);
 

@@ -8,8 +8,7 @@ public class Polyline extends Shape {
 
     int[] x;
     int[] y;
-    int positionX;
-    int positionY;
+    Point position = null, bottomRight = null;
 
     boolean isPolygon;
 
@@ -31,6 +30,7 @@ public class Polyline extends Shape {
         int minX= Arrays.stream(this.x).min().getAsInt();
         int minY= Arrays.stream(this.y).min().getAsInt();
         Point p=new Point(minX,minY);
+        position = p;
         return p;
     }
 
@@ -38,6 +38,7 @@ public class Polyline extends Shape {
         int maxX= Arrays.stream(this.x).max().getAsInt();
         int maxY= Arrays.stream(this.y).max().getAsInt();
         Point p=new Point(maxX,maxY);
+        bottomRight = p;
         return p;
     }
 
@@ -54,10 +55,6 @@ public class Polyline extends Shape {
     }
 
     @Override
-    public void delete() {
-    }
-
-    @Override
     public void draw(Graphics g){
         g.setColor(color);
         Polygon pol=new Polygon(x,y,this.x.length);
@@ -71,5 +68,12 @@ public class Polyline extends Shape {
         return (new Polygon(x, y, x.length)).contains(point);
     }
 
-
+    public void resize(int x, int y){
+        double scaleX = (x - position.getX())/(bottomRight.getX() - position.getX());
+        double scaleY = (y - position.getY())/(bottomRight.getY() - position.getY());
+        double offsetX = scaleX*position.getX() - position.getX();
+        double offsetY = scaleY*position.getY() - position.getY();
+        this.x = Arrays.stream(this.x).map(n->(int) (n*scaleX - offsetX)).toArray();
+        this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY - offsetY)).toArray();
+    }
 }

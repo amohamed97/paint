@@ -97,7 +97,7 @@ public class Window {
         };
 
         MouseAdapter selector = new MouseAdapter() {
-            int x, y;
+            int x, y, cursorMode;
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -110,28 +110,43 @@ public class Window {
                 super.mousePressed(e);
                 x = e.getX();
                 y = e.getY();
+                cursorMode = engine.cursorMode(e.getPoint());
             }
 
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
-                int newX, newY, yDiff, xDiff;
                 super.mouseDragged(mouseEvent);
-                newX = mouseEvent.getX();
-                newY = mouseEvent.getY();
-                xDiff = newX - x;
-                yDiff = newY - y;
-                x = newX;
-                y = newY;
-                engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
-                canvasPanel.repaint();
+                if(cursorMode == 1) {
+                    int newX, newY, yDiff, xDiff;
+                    newX = mouseEvent.getX();
+                    newY = mouseEvent.getY();
+                    xDiff = newX - x;
+                    yDiff = newY - y;
+                    x = newX;
+                    y = newY;
+                    engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
+                    canvasPanel.repaint();
+                }else{
+                    engine.resize(mouseEvent.getPoint());
+                    canvasPanel.repaint();
+                }
             }
 
             @Override
             public void mouseMoved(MouseEvent e){
                 super.mouseEntered(e);
-                canvasPanel.setCursor(engine.containsSelected(e.getPoint())?
-                        Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR) :
-                        Cursor.getDefaultCursor());
+                Cursor cursor;
+                switch(engine.cursorMode(e.getPoint())){
+                    case 1:
+                        cursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+                        break;
+                    case 2:
+                        cursor = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+                        break;
+                    default:
+                        cursor = Cursor.getDefaultCursor();
+                }
+                canvasPanel.setCursor(cursor);
             }
         };
 

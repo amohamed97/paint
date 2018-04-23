@@ -16,16 +16,20 @@ public class Engine {
 
 
     public void refresh(Graphics g) {
-        Point selectedPosition, selectedBottomRight;
         shapes.forEach(s -> s.draw(g));
         if(selected != -1){
             Shape selectedShape = shapes.get(selected);
-            selectedPosition = selectedShape.getPosition();
-            selectedBottomRight = selectedShape.getBottomRight();
+            Point selectedPosition = selectedShape.getPosition();
+            Point selectedBottomRight = selectedShape.getBottomRight();
+            int selectedPositionX = new Double(selectedPosition.getX()).intValue();
+            int selectedPositionY = new Double(selectedPosition.getY()).intValue();
+            int selectedBottomRightX = new Double(selectedBottomRight.getX()).intValue();
+            int selectedBottomRightY = new Double(selectedBottomRight.getY()).intValue();
             g.setColor(Color.BLUE);
-            g.drawRect(new Double(selectedPosition.getX()).intValue(), new Double(selectedPosition.getY()).intValue(),
-                    new Double(selectedBottomRight.getX() - selectedPosition.getX()).intValue(),
-                    new Double(selectedBottomRight.getY() - selectedPosition.getY()).intValue());
+            g.drawRect(selectedPositionX, selectedPositionY,
+                    selectedBottomRightX - selectedPositionX,
+                    selectedBottomRightY - selectedPositionY);
+            g.fillRect(selectedBottomRightX-5, selectedBottomRightY-5, 5, 5);
         }
     }
 
@@ -51,6 +55,10 @@ public class Engine {
         }
     }
 
+    public void resize(Point point){
+        shapes.get(selected).resize((int) point.getX(), (int) point.getY());
+    }
+
     public void deleteShape(){
         shapes.remove(selected);
         selected=-1;
@@ -61,14 +69,16 @@ public class Engine {
         selected = -1;
     }
 
-    public boolean containsSelected(Point point){
+    public int cursorMode(Point point){
         if(selected == -1)
-            return false;
+            return 0;
 
-        if(shapes.get(selected).contains(point))
-            return true;
-        else
-            return false;
+        Shape selectedShape = shapes.get(selected);
+
+        if(selectedShape.getBottomRight().distance(point) <= 5)
+            return 2;
+
+        return selectedShape.contains(point)? 1 : 0;
     }
 
     public Shape cloneShape(){
