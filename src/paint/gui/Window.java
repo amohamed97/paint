@@ -110,14 +110,16 @@ public class Window {
             public void mouseDragged(MouseEvent mouseEvent) {
                 int newX,newY,yDiff,xDiff;
                 super.mouseDragged(mouseEvent);
-                newX=mouseEvent.getX();
-                newY=mouseEvent.getY();
-                xDiff=newX-x;
-                yDiff=newY-y;
-                x=newX;
-                y=newY;
-                engine.moveShape(xDiff,yDiff);
-                canvasPanel.repaint();
+                if(engine.containsSelected(mouseEvent.getPoint())) {
+                    newX = mouseEvent.getX();
+                    newY = mouseEvent.getY();
+                    xDiff = newX - x;
+                    yDiff = newY - y;
+                    x = newX;
+                    y = newY;
+                    engine.moveShape(xDiff, yDiff);
+                    canvasPanel.repaint();
+                }
             }
         };
 

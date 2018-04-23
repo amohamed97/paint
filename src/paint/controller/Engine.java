@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Engine {
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     int selected = -1;
+    Point selectedPosition, selectedBottomRight;
 
     public void removeLastShape() {
         shapes.remove(shapes.size()-1);
@@ -18,12 +19,12 @@ public class Engine {
         shapes.forEach(s -> s.draw(g));
         if(selected != -1){
             Shape selectedShape = shapes.get(selected);
-            Point pos = selectedShape.getPosition();
-            Point end = selectedShape.getBottomRight();
+            selectedPosition = selectedShape.getPosition();
+            selectedBottomRight = selectedShape.getBottomRight();
             g.setColor(Color.BLUE);
-            g.drawRect(new Double(pos.getX()).intValue(), new Double(pos.getY()).intValue(),
-                    new Double(end.getX() - pos.getX()).intValue(), new Double(end.getY() - pos.getY()).intValue());
-            System.out.println("Refreshing");
+            g.drawRect(new Double(selectedPosition.getX()).intValue(), new Double(selectedPosition.getY()).intValue(),
+                    new Double(selectedBottomRight.getX() - selectedPosition.getX()).intValue(),
+                    new Double(selectedBottomRight.getY() - selectedPosition.getY()).intValue());
         }
     }
 
@@ -52,6 +53,19 @@ public class Engine {
     public void deleteShape(){
         shapes.remove(selected);
         selected=-1;
+    }
+
+    public boolean containsSelected(Point point){
+        if(selected == -1)
+            return false;
+        double pointX = point.getX();
+        double pointY = point.getY();
+        double selectedPositionX = selectedPosition.getX();
+        double selectedPositionY = selectedPosition.getY();
+        double selectedBottomRightX = selectedBottomRight.getX();
+        double selectedBottomRightY = selectedBottomRight.getY();
+        return selectedPositionX <= pointX && pointX <= selectedBottomRightX &&
+                selectedPositionY <= pointY && pointY <= selectedBottomRightY;
     }
 
 }
