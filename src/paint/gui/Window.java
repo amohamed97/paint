@@ -20,11 +20,13 @@ public class Window {
     private Canvas canvasPanel;
     private JToggleButton selectToggleButton;
     private JButton deleteButton;
+    private JButton fillColorButton;
     private String actionCommand;
     private int startX, startY;
 
 
     private Color brushColor = Color.black;
+    private Color fillColor = new Color(0,0,0,0);
 
 	public Window() {
 
@@ -38,11 +40,13 @@ public class Window {
 			if(color != null)
 				brushColor = color;
 		});
+        fillColorButton.addActionListener(e -> {
+            Color color = ColorDialog.getColor();
+            if(color != null)
+                fillColor = color;
+        });
+
         canvasPanel.setEngine(engine);
-
-
-
-
 
         MouseAdapter shaper = new MouseAdapter() {
             int startX, startY;
@@ -85,6 +89,7 @@ public class Window {
                 }else
                     throw new UnsupportedOperationException();
                 newShape.setColor(brushColor);
+                newShape.setFillColor(fillColor);
                 engine.addShape(newShape);
                 canvasPanel.repaint();
             }

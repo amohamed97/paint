@@ -28,6 +28,8 @@ public class Ellipse extends Shape {
     public void draw(Graphics g){
         g.setColor(color);
         g.drawOval(x,y,width,height);
+        g.setColor(fillColor);
+        g.fillOval(x,y,width,height);
     }
 
     @Override

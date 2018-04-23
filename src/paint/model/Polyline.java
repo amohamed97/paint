@@ -59,6 +59,8 @@ public class Polyline extends Shape {
         g.setColor(color);
         Polygon pol=new Polygon(x,y,this.x.length);
         g.drawPolygon(pol);
+        g.setColor(fillColor);
+        g.fillPolygon(pol);
     }
 
     @Override

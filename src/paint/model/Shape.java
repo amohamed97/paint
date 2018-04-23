@@ -21,7 +21,7 @@ abstract public class Shape{
         this.color = color;
     }
 
-    void setFillColor(Color color) {
+    public void setFillColor(Color color) {
         this.fillColor = color;
     }
 
