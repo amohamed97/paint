@@ -6,7 +6,7 @@
       <xy x="0" y="0" width="672" height="59"/>
     </constraints>
     <properties>
-      <preferredSize width="600" height="500"/>
+      <preferredSize width="700" height="500"/>
     </properties>
     <border type="none"/>
     <children>
@@ -76,6 +76,12 @@
             <constraints/>
             <properties>
               <text value="Delete"/>
+            </properties>
+          </component>
+          <component id="d9d82" class="javax.swing.JButton" binding="cloneButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Clone"/>
             </properties>
           </component>
         </children>

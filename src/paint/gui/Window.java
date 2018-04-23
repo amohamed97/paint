@@ -21,6 +21,7 @@ public class Window {
     private JToggleButton selectToggleButton;
     private JButton deleteButton;
     private JButton fillColorButton;
+    private JButton cloneButton;
     private String actionCommand;
     private int startX, startY;
 
@@ -161,6 +162,17 @@ public class Window {
         deleteButton.addActionListener(e -> {
                 engine.deleteShape();
                 canvasPanel.repaint();
+        });
+        cloneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Shape shape = engine.cloneShape();
+                if(shape != null) {
+                    shape.setColor(brushColor);
+                    shape.setFillColor(fillColor);
+                }
+                canvasPanel.repaint();
+            }
         });
     }
 }

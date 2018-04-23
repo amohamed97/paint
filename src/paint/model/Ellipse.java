@@ -49,6 +49,11 @@ public class Ellipse extends Shape {
         return new Point(this.x + width, this.y + height);
     }
 
+    @Override
+    public Ellipse cloneShape() {
+        return new Ellipse(this.x,this.y,this.width,this.height);
+    }
+
     public boolean contains(Point point){
         return (new Ellipse2D.Float(x, y, width, height)).contains(point);
     }

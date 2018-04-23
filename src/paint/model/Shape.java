@@ -29,9 +29,7 @@ abstract public class Shape{
         return fillColor;
     }
 
-    public void cloneShape() {
-
-    }
+    abstract public Shape cloneShape() ;
 
     abstract public void draw(Graphics g);
 

@@ -71,4 +71,14 @@ public class Engine {
             return false;
     }
 
+    public Shape cloneShape(){
+        if(selected != -1) {
+            Shape shape = shapes.get(selected).cloneShape();
+            shape.move(-10,-10);
+            addShape(shape);
+            return shape;
+        }
+        return null;
+    }
+
 }

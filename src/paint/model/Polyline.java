@@ -1,8 +1,6 @@
 package paint.model;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Polyline extends Shape {
@@ -43,6 +41,11 @@ public class Polyline extends Shape {
         return p;
     }
 
+    @Override
+    public Polyline cloneShape() {
+        return new Polyline(this.x,this.y);
+    }
+
     public void move(int xDiff, int yDiff){
 
         this.x=Arrays.stream(this.x).map(n->n+xDiff).toArray();
@@ -67,4 +70,6 @@ public class Polyline extends Shape {
     public boolean contains(Point point) {
         return (new Polygon(x, y, x.length)).contains(point);
     }
+
+
 }
