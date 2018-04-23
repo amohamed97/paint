@@ -121,6 +121,14 @@ public class Window {
                     canvasPanel.repaint();
                 }
             }
+
+            @Override
+            public void mouseMoved(MouseEvent e){
+                super.mouseEntered(e);
+                canvasPanel.setCursor(engine.containsSelected(e.getPoint())?
+                        Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR) :
+                        Cursor.getDefaultCursor());
+            }
         };
 
         ActionListener modeChanged = e -> {
