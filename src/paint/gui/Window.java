@@ -160,9 +160,7 @@ public class Window {
                 canvasPanel.removeMouseListener(shaper);
             } else {
                 canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.addMouseMotionListener(shaper);
-                canvasPanel.removeMouseListener(shaper);
                 canvasPanel.addMouseListener(shaper);
                 canvasPanel.removeMouseListener(selector);
                 canvasPanel.removeMouseMotionListener(selector);
@@ -189,5 +187,7 @@ public class Window {
                 canvasPanel.repaint();
             }
         });
+        canvasPanel.addMouseListener(selector);
+        canvasPanel.addMouseMotionListener(selector);
     }
 }
