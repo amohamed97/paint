@@ -68,12 +68,21 @@ public class Polyline extends Shape {
         return (new Polygon(x, y, x.length)).contains(point);
     }
 
-    public void resize(int x, int y){
-        double scaleX = (x - position.getX())/(bottomRight.getX() - position.getX());
-        double scaleY = (y - position.getY())/(bottomRight.getY() - position.getY());
-        double offsetX = scaleX*position.getX() - position.getX();
-        double offsetY = scaleY*position.getY() - position.getY();
-        this.x = Arrays.stream(this.x).map(n->(int) (n*scaleX - offsetX)).toArray();
-        this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY - offsetY)).toArray();
+
+
+    public void resize(int x , int y){
+        this.x[2]=x;
+        this.y[2]=y;
+        this.x[1]=x;
+        this.y[3]=y;
     }
+
+//    public void resize(int x, int y){
+//        double scaleX = (x - position.getX())/(bottomRight.getX() - position.getX());
+//        double scaleY = (y - position.getY())/(bottomRight.getY() - position.getY());
+//        double offsetX = scaleX*position.getX() - position.getX();
+//        double offsetY = scaleY*position.getY() - position.getY();
+//        this.x = Arrays.stream(this.x).map(n->(int) (n*scaleX - offsetX)).toArray();
+//        this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY - offsetY)).toArray();
+//    }
 }
