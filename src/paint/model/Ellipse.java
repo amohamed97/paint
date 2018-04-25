@@ -1,8 +1,9 @@
 package paint.model;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.util.Arrays;
 
 public class Ellipse extends Shape {
     int x, y, width, height;
@@ -55,6 +56,17 @@ public class Ellipse extends Shape {
 
     public boolean contains(Point point) {
         return (new Ellipse2D.Float(x, y, width, height)).contains(point);
+    }
+
+    @Override
+    public JSONObject saveJSON() {
+        JSONObject obj = new JSONObject();
+        obj.put("X",x);
+        obj.put("Y",y);
+        obj.put("Width",width);
+        obj.put("Height",height);
+        obj.put("type", "Ellipse");
+        return obj;
     }
 
     public void move(int xDiff, int yDiff) {
