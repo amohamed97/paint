@@ -22,6 +22,8 @@ public class Window {
     private JButton deleteButton;
     private JButton fillColorButton;
     private JButton cloneButton;
+    private JButton undoButton;
+    private JButton redoButton;
     private String actionCommand;
     private int startX, startY;
 
@@ -51,14 +53,13 @@ public class Window {
 
         MouseAdapter shaper = new MouseAdapter() {
             int startX, startY;
-            paint.model.Shape newShape;
+            paint.model.Shape newShape = null;
 
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 startX = e.getX();
                 startY = e.getY();
-                newShape = null;
             };
 
             @Override
@@ -93,6 +94,16 @@ public class Window {
                 newShape.setFillColor(fillColor);
                 engine.addShape(newShape);
                 canvasPanel.repaint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e){
+                super.mouseReleased(e);
+                if(newShape != null){
+                    engine.checkpointAdd();
+                }
+                undoButton.setEnabled(true);
+                newShape = null;
             }
         };
 
@@ -189,5 +200,19 @@ public class Window {
         });
         canvasPanel.addMouseListener(selector);
         canvasPanel.addMouseMotionListener(selector);
+
+        undoButton.addActionListener(e -> {
+            engine.undo();
+            undoButton.setEnabled(engine.hasUndo());
+            redoButton.setEnabled(true);
+            canvasPanel.repaint();
+        });
+
+        redoButton.addActionListener(e -> {
+            engine.redo();
+            redoButton.setEnabled(engine.hasRedo());
+            canvasPanel.repaint();
+            undoButton.setEnabled(true);
+        });
     }
 }

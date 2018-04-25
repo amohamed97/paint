@@ -1,5 +1,6 @@
 package paint.controller;
 
+import paint.controller.command.*;
 import paint.model.Shape;
 
 import java.awt.*;
@@ -7,7 +8,9 @@ import java.util.ArrayList;
 
 public class Engine {
     ArrayList<Shape> shapes = new ArrayList<Shape>();
+    ArrayList<Command> commands = new ArrayList<Command>();
     int selected = -1;
+    int commandIndex = 0;
 
 
     public void removeLastShape() {
@@ -36,6 +39,12 @@ public class Engine {
     public void addShape(Shape shape) {
         shapes.add(shape);
     }
+
+    public void checkpointAdd(){
+        int index = shapes.size() - 1;
+        commands.add(commandIndex++, new Add(shapes.get(index), index));
+    }
+
     public Shape[] getShapes() {
         return (Shape[]) shapes.toArray();
     }
@@ -60,10 +69,10 @@ public class Engine {
     }
 
     public void deleteShape(){
+        commands.add(commandIndex++, new Delete(shapes.get(selected), selected));
         shapes.remove(selected);
         selected=-1;
     }
-
 
     public void unselect(){
         selected = -1;
@@ -91,4 +100,19 @@ public class Engine {
         return null;
     }
 
+    public void undo(){
+        commands.get(--commandIndex).reverse(shapes);
+    }
+
+    public void redo(){
+        commands.get(commandIndex++).execute(shapes);
+    }
+
+    public boolean hasUndo(){
+        return commandIndex > 0;
+    }
+
+    public boolean hasRedo(){
+        return commandIndex < commands.size();
+    }
 }
