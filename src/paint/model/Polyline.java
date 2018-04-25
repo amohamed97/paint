@@ -1,5 +1,8 @@
 package paint.model;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 import java.util.Arrays;
 
@@ -68,6 +71,18 @@ public class Polyline extends Shape {
         return (new Polygon(x, y, x.length)).contains(point);
     }
 
+    @Override
+    public JSONObject saveJSON() {
+        JSONArray xArr = new JSONArray();
+        JSONArray yArr = new JSONArray();
+        JSONObject obj = new JSONObject();
+        Arrays.stream(x).forEach(a -> xArr.add(a));
+        Arrays.stream(y).forEach(a -> yArr.add(a));
+        obj.put("X", xArr);
+        obj.put("Y", yArr);
+        obj.put("type", "PolyLine");
+        return obj;
+    }
 
 
     public void resize(int x , int y){

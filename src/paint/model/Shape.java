@@ -1,5 +1,7 @@
 package paint.model;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 abstract public class Shape{
@@ -13,7 +15,7 @@ abstract public class Shape{
 
     abstract public Point getBottomRight();
 
-    Color getColor() {
+    public Color getColor() {
         return color;
     }
 
@@ -25,7 +27,7 @@ abstract public class Shape{
         this.fillColor = color;
     }
 
-    Color getFillColor() {
+    public Color getFillColor() {
         return fillColor;
     }
 
@@ -38,5 +40,6 @@ abstract public class Shape{
     public abstract void resize(int x, int y);
 
     abstract public boolean contains(Point point);
+    abstract public JSONObject saveJSON();
 
 }

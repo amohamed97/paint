@@ -24,8 +24,11 @@ public class Window {
     private JButton cloneButton;
     private JButton undoButton;
     private JButton redoButton;
+    private JButton saveButton;
+    private JButton loadButton;
     private String actionCommand;
     private int startX, startY;
+    String fileName;
 
 
     private Color brushColor = Color.black;
@@ -213,6 +216,31 @@ public class Window {
             redoButton.setEnabled(engine.hasRedo());
             canvasPanel.repaint();
             undoButton.setEnabled(true);
+        });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+                FileDialog fd = new FileDialog(frame,"choose file",FileDialog.LOAD);
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                frame.setSize(200,200);
+                fd.setVisible(true);
+                fileName = fd.getFile();
+                engine.save(fileName);
+            }
+        });
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+                FileDialog fd = new FileDialog(frame,"choose file",FileDialog.LOAD);
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                frame.setSize(200,200);
+                fd.setVisible(true);
+                fileName = fd.getFile();
+                engine.load(fileName);
+                canvasPanel.repaint();
+            }
         });
     }
 }

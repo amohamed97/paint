@@ -1,14 +1,23 @@
 package paint.controller;
 
-import paint.controller.command.*;
+import fileManagement.Load;
+import fileManagement.Save;
+import paint.controller.command.Add;
+import paint.controller.command.Command;
+import paint.controller.command.Delete;
+import paint.model.Polyline;
 import paint.model.Shape;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+//import fileManagement.Load;
+
 public class Engine {
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     ArrayList<Command> commands = new ArrayList<Command>();
+    Save s;
+    Load load;
     int selected = -1;
     int commandIndex = 0;
 
@@ -114,5 +123,19 @@ public class Engine {
 
     public boolean hasRedo(){
         return commandIndex < commands.size();
+    }
+
+    public void save(String fileName){
+        s = new Save(shapes);
+        s.saveJSON(fileName);
+    }
+    public void load(String fileName){
+        load = new Load();
+        this.shapes = load.loadJSON(fileName);
+//        for(Shape x : shapes){
+//            System.out.println(x.getPosition());
+//            System.out.println(x.getColor());
+//            System.out.println(x instanceof Polyline);
+//        }
     }
 }
