@@ -65,6 +65,10 @@ public class Ellipse extends Shape {
     public void resize(int x, int y) {
         this.width = x - this.x;
         this.height = y - this.y;
+        if(this.width < 5)
+            this.width = 5;
+        if(this.height < 5)
+            this.height = 5;
     }
 
 }

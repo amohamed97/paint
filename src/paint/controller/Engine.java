@@ -67,6 +67,9 @@ public class Engine {
     public void resize(Point point){
         shapes.get(selected).resize((int) point.getX(), (int) point.getY());
     }
+    public void checkpointResize(int x,int y,int oldX,int oldY) {
+        commands.add(commandIndex++, new Resize(selected,x,y,oldX,oldY));
+    }
 
     public void deleteShape(){
         commands.add(commandIndex++, new Delete(shapes.get(selected), selected));

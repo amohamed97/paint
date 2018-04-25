@@ -88,6 +88,9 @@ public class Window {
                 }else if(actionCommand.equals("Rectangle")) {
                     newShape = new Polyline(new int[]{startX, endX, endX, startX},
                             new int[]{startY, startY, endY, endY});
+                }else if(actionCommand.equals("Rectangle")) {
+
+
                 }else
                     throw new UnsupportedOperationException();
                 newShape.setColor(brushColor);
@@ -159,6 +162,13 @@ public class Window {
                 }
                 canvasPanel.setCursor(cursor);
             }
+
+            @Override
+            public void mouseReleased(MouseEvent e){
+                if(cursorMode == 2) {
+                    engine.checkpointResize(e.getX(), e.getY(), x, y);
+                }
+            }
         };
 
         ActionListener modeChanged = e -> {
@@ -171,7 +181,9 @@ public class Window {
                 canvasPanel.removeMouseListener(shaper);
             } else {
                 canvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.addMouseMotionListener(shaper);
+                canvasPanel.removeMouseListener(shaper);
                 canvasPanel.addMouseListener(shaper);
                 canvasPanel.removeMouseListener(selector);
                 canvasPanel.removeMouseMotionListener(selector);

@@ -1,6 +1,7 @@
 package paint.model;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 
 public class Polyline extends Shape {
@@ -69,20 +70,25 @@ public class Polyline extends Shape {
     }
 
 
-
-    public void resize(int x , int y){
-        this.x[2]=x;
-        this.y[2]=y;
-        this.x[1]=x;
-        this.y[3]=y;
-    }
-
-//    public void resize(int x, int y){
-//        double scaleX = (x - position.getX())/(bottomRight.getX() - position.getX());
-//        double scaleY = (y - position.getY())/(bottomRight.getY() - position.getY());
-//        double offsetX = scaleX*position.getX() - position.getX();
-//        double offsetY = scaleY*position.getY() - position.getY();
-//        this.x = Arrays.stream(this.x).map(n->(int) (n*scaleX - offsetX)).toArray();
-//        this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY - offsetY)).toArray();
+//    public void resize(int x , int y){
+//        this.x[2]=x;
+//        this.y[2]=y;
+//        this.x[1]=x;
+//        this.y[3]=y;
 //    }
+
+
+    public void resize(int x, int y){
+        if(x - position.getX() < 5)
+            return;
+        if(y - position.getY()  < 5)
+            return;
+        double scaleX = (x - position.getX())/(bottomRight.getX() - position.getX());
+        double scaleY = (y - position.getY())/(bottomRight.getY() - position.getY());
+        double offsetX = position.getX()*(1 - scaleX);
+        double offsetY = position.getY()*(1 - scaleY);
+        this.x = Arrays.stream(this.x).map(n->(int) (n*scaleX + offsetX)).toArray();
+        this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY + offsetY)).toArray();
+        getBottomRight();
+    }
 }
