@@ -64,6 +64,10 @@ public class Engine {
         }
     }
 
+    public void checkpointMove(int xDiff, int yDiff){
+        commands.add(commandIndex++, new Move(xDiff, yDiff, selected));
+    }
+
     public void resize(Point point){
         shapes.get(selected).resize((int) point.getX(), (int) point.getY());
     }

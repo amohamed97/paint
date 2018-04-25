@@ -111,7 +111,7 @@ public class Window {
         };
 
         MouseAdapter selector = new MouseAdapter() {
-            int x, y, cursorMode;
+            int oldX, oldY, tmpX, tmpY, cursorMode;
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -122,8 +122,10 @@ public class Window {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                x = e.getX();
-                y = e.getY();
+                oldX = e.getX();
+                oldY = e.getY();
+                tmpX = oldX;
+                tmpY = oldY;
                 cursorMode = engine.cursorMode(e.getPoint());
             }
 
@@ -134,10 +136,10 @@ public class Window {
                     int newX, newY, yDiff, xDiff;
                     newX = mouseEvent.getX();
                     newY = mouseEvent.getY();
-                    xDiff = newX - x;
-                    yDiff = newY - y;
-                    x = newX;
-                    y = newY;
+                    xDiff = newX - tmpX;
+                    yDiff = newY - tmpY;
+                    tmpX = newX;
+                    tmpY = newY;
                     engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
                     canvasPanel.repaint();
                 }else{
@@ -166,7 +168,9 @@ public class Window {
             @Override
             public void mouseReleased(MouseEvent e){
                 if(cursorMode == 2) {
-                    engine.checkpointResize(e.getX(), e.getY(), x, y);
+                    engine.checkpointResize(e.getX(), e.getY(), oldX, oldY);
+                }else if(cursorMode == 1){
+                    engine.checkpointMove(e.getX() - oldX, e.getY() - oldY);
                 }
             }
         };
