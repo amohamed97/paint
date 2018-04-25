@@ -50,6 +50,25 @@
               <text value="Ellipse"/>
             </properties>
           </component>
+          <component id="b74c8" class="javax.swing.JToggleButton" binding="squareToggleButton">
+            <constraints/>
+            <properties>
+              <text value="Square"/>
+            </properties>
+          </component>
+          <component id="c4316" class="javax.swing.JToggleButton" binding="circleToggleButton">
+            <constraints/>
+            <properties>
+              <text value="Circle"/>
+            </properties>
+          </component>
+          <component id="da9b7" class="javax.swing.JToggleButton" binding="triangleToggleButton">
+            <constraints/>
+            <properties>
+              <selected value="false"/>
+              <text value="Triangle"/>
+            </properties>
+          </component>
           <component id="73b62" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
@@ -118,6 +137,9 @@
       <member id="680d7"/>
       <member id="e8b70"/>
       <member id="52b79"/>
+      <member id="b74c8"/>
+      <member id="c4316"/>
+      <member id="da9b7"/>
     </group>
   </buttonGroups>
 </form>

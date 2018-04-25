@@ -24,6 +24,9 @@ public class Window {
     private JButton cloneButton;
     private JButton undoButton;
     private JButton redoButton;
+    private JToggleButton squareToggleButton;
+    private JToggleButton circleToggleButton;
+    private JToggleButton triangleToggleButton;
     private String actionCommand;
     private int startX, startY;
 
@@ -32,6 +35,8 @@ public class Window {
     private Color fillColor = new Color(0,0,0,0);
 
 	public Window() {
+
+
 
 		backgroundColorButton.addActionListener(e -> {
 			Color color = ColorDialog.getColor();
@@ -71,9 +76,10 @@ public class Window {
                     engine.removeLastShape();
                 if(actionCommand.equals("Line"))
                     newShape = new Polyline(new int[]{startX, endX}, new int[]{startY, endY});
-                else if(actionCommand.equals("Ellipse")) {
+                else if(actionCommand.equals("Ellipse") || actionCommand.equals("Circle") ) {
                     int leftX = startX;
                     int topY = startY;
+
                     if(endX < leftX){
                         int tmp = leftX;
                         leftX = endX;
@@ -84,13 +90,31 @@ public class Window {
                         topY = endY;
                         endY = tmp;
                     }
-                    newShape = new Ellipse(leftX, topY, endX - leftX, endY - topY);
+                    if(actionCommand.equals("Circle")) {
+                        int width = endX - leftX;
+                        int height = endY - topY;
+                        if(width > height)
+                            endX = (endY - topY) + leftX;
+                        else
+                            endY = (endX - leftX) + topY;
+
+                    }
+                    newShape = new Ellipse(leftX, topY, endX-leftX, endY - topY);
                 }else if(actionCommand.equals("Rectangle")) {
                     newShape = new Polyline(new int[]{startX, endX, endX, startX},
                             new int[]{startY, startY, endY, endY});
-                }else if(actionCommand.equals("Rectangle")) {
+                }else if(actionCommand.equals("Square")) {
 
-
+                    if(endX - startX < endY - startY){
+                        endY = (endX - startX) + startY;
+                    }else if(endX - startX > endY - startY){
+                        endX = (endY - startY) + startX;
+                    }
+                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
+                            new int[]{startY, startY, endY, endY});
+                }else if(actionCommand.equals("Triangle")){
+                    newShape = new Polyline(new int[]{startX,endX , startX},
+                            new int[]{startY, endY, endY});
                 }else
                     throw new UnsupportedOperationException();
                 newShape.setColor(brushColor);
@@ -195,6 +219,9 @@ public class Window {
         lineToggleButton.addActionListener(modeChanged);
         ellipseToggleButton.addActionListener(modeChanged);
         rectangleToggleButton.addActionListener(modeChanged);
+        squareToggleButton.addActionListener(modeChanged);
+        circleToggleButton.addActionListener(modeChanged);
+        triangleToggleButton.addActionListener(modeChanged);
         deleteButton.addActionListener(e -> {
                 engine.deleteShape();
                 canvasPanel.repaint();
