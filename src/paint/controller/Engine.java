@@ -2,9 +2,7 @@ package paint.controller;
 
 import fileManagement.Load;
 import fileManagement.Save;
-import paint.controller.command.Add;
-import paint.controller.command.Command;
-import paint.controller.command.Delete;
+import paint.controller.command.*;
 import paint.model.Polyline;
 import paint.model.Shape;
 
