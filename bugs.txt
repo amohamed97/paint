@@ -1,5 +1,3 @@
 *Colors differ from the saved shapes' colors 
 
 *Undo/Redo doesn't work after loading even after making further changes
-
-*Saving opens an "Open File" Dialog -_-

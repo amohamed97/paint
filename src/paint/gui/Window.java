@@ -266,7 +266,7 @@ public class Window {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame();
-                FileDialog fd = new FileDialog(frame,"choose file",FileDialog.LOAD);
+                FileDialog fd = new FileDialog(frame,"choose file",FileDialog.SAVE);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setSize(200,200);
                 fd.setVisible(true);
