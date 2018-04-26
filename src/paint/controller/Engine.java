@@ -116,6 +116,7 @@ public class Engine {
 
     public void undo(){
         commands.get(--commandIndex).reverse(shapes);
+
     }
 
     public void redo(){
@@ -141,6 +142,11 @@ public class Engine {
 //            System.out.println(x.getPosition());
 //            System.out.println(x.getColor());
 //            System.out.println(x instanceof Polyline);
-//        }
+        }
+    public boolean selectionExists(){
+        if(selected == -1)
+            return false;
+        else
+            return true;
     }
 }

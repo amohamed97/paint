@@ -159,19 +159,21 @@ public class Window {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
                 super.mouseDragged(mouseEvent);
-                if(cursorMode == 1) {
-                    int newX, newY, yDiff, xDiff;
-                    newX = mouseEvent.getX();
-                    newY = mouseEvent.getY();
-                    xDiff = newX - tmpX;
-                    yDiff = newY - tmpY;
-                    tmpX = newX;
-                    tmpY = newY;
-                    engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
-                    canvasPanel.repaint();
-                }else{
-                    engine.resize(mouseEvent.getPoint());
-                    canvasPanel.repaint();
+                if(engine.selectionExists()) {
+                    if (cursorMode == 1) {
+                        int newX, newY, yDiff, xDiff;
+                        newX = mouseEvent.getX();
+                        newY = mouseEvent.getY();
+                        xDiff = newX - tmpX;
+                        yDiff = newY - tmpY;
+                        tmpX = newX;
+                        tmpY = newY;
+                        engine.moveShape(xDiff, yDiff, mouseEvent.getPoint());
+                        canvasPanel.repaint();
+                    } else {
+                        engine.resize(mouseEvent.getPoint());
+                        canvasPanel.repaint();
+                    }
                 }
             }
 

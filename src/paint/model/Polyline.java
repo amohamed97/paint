@@ -60,11 +60,11 @@ public class Polyline extends Shape {
 
     @Override
     public void draw(Graphics g){
-        g.setColor(color);
         Polygon pol=new Polygon(x,y,this.x.length);
-        g.drawPolygon(pol);
         g.setColor(fillColor);
         g.fillPolygon(pol);
+        g.setColor(color);
+        g.drawPolygon(pol);
     }
 
     @Override
