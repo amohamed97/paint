@@ -40,6 +40,7 @@ abstract public class Shape{
     public abstract void resize(int x, int y);
 
     abstract public boolean contains(Point point);
+
     abstract public JSONObject saveJSON();
 
 }

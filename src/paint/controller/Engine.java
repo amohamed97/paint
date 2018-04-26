@@ -57,16 +57,18 @@ public class Engine {
     }
 
     public void selectShape(Point point){
-        for(int i = shapes.size()-1; i >= 0; i--)
+        for(int i = shapes.size()-1; i >= 0; i--) {
+
             if (shapes.get(i).contains(point)) {
                 selected = i;
                 return;
             }
+        }
         selected = -1;
     }
 
     public void moveShape(int diffX,int diffY , Point point){
-        if(selected !=-1 && shapes.get(selected).contains(point)) {
+        if(selected !=-1 &&  shapes.get(selected).contains(point)) {
             shapes.get(selected).move(diffX, diffY);
         }
     }

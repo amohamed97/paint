@@ -4,7 +4,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 
 public class Polyline extends Shape {
@@ -69,6 +68,11 @@ public class Polyline extends Shape {
 
     @Override
     public boolean contains(Point point) {
+        if(this.x.length == 2){
+            int[] xl = {this.x[0],this.x[1],this.x[1],this.x[0]};
+            int[] yl = {this.y[0],this.y[0],this.y[1],this.y[1]};
+            return (new Polygon(xl,yl,4)).contains(point);
+        }
         return (new Polygon(x, y, x.length)).contains(point);
     }
 
@@ -85,15 +89,26 @@ public class Polyline extends Shape {
         return obj;
     }
 
-//    public void resize(int x , int y){
-//        this.x[2]=x;
-//        this.y[2]=y;
-//        this.x[1]=x;
-//        this.y[3]=y;
-//    }
 
 
     public void resize(int x, int y){
+
+        if(this.x.length == 4) {
+            this.x[2] = x;
+            this.y[2] = y;
+            this.x[1] = x;
+            this.y[3] = y;
+            return;
+        }else if(this.x.length == 3){
+            this.x[1] = x;
+            this.y[1] = y;
+            this.y[2] = y;
+            return;
+        }else if(this.x.length == 2){
+            this.x[1] = x;
+            this.y[1] = y;
+            return;
+        }
         if(x - position.getX() < 5)
             return;
         if(y - position.getY()  < 5)
@@ -106,4 +121,7 @@ public class Polyline extends Shape {
         this.y = Arrays.stream(this.y).map(n->(int) (n*scaleY + offsetY)).toArray();
         getBottomRight();
     }
+
+
+
 }
