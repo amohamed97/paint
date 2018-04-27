@@ -117,6 +117,8 @@ public class Engine {
             Shape shape = shapes.get(selected).cloneShape();
             shape.move(-10,-10);
             addShape(shape);
+            selected = shapes.size() - 1;
+            checkpointAdd();
             return shape;
         }
         return null;
@@ -162,9 +164,6 @@ public class Engine {
     }
 
     public boolean selectionExists(){
-        if(selected == -1)
-            return false;
-        else
-            return true;
+        return selected != -1;
     }
 }

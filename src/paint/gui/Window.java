@@ -311,12 +311,15 @@ public class Window {
         KeyAdapter delKeyAdapter = new KeyAdapter(){
             @Override
             public void keyTyped(KeyEvent keyEvent) {
-                if(engine.selectionExists())
+                if(engine.selectionExists()) {
                     if (keyEvent.getKeyChar() == '\u007F')
                         deleteButton.doClick();
+                }
             }
         };
 
         selectToggleButton.addKeyListener(delKeyAdapter);
+        undoButton.addKeyListener(delKeyAdapter);
+        cloneButton.addKeyListener(delKeyAdapter);
     }
 }
