@@ -133,13 +133,13 @@ public class Engine {
         return commandIndex < commands.size();
     }
 
-    public void save(String fileName){
+    public void save(String dir,String fileName){
         s = new Save(shapes);
-        s.saveJSON(fileName);
+        s.saveJSON(dir+fileName);
     }
-    public void load(String fileName){
+    public void load(String dir,String fileName){
         load = new Load();
-        this.shapes = load.loadJSON(fileName);
+        this.shapes = load.loadJSON(dir+fileName);
 //        for(Shape x : shapes){
 //            System.out.println(x.getPosition());
 //            System.out.println(x.getColor());

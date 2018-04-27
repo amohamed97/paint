@@ -271,7 +271,7 @@ public class Window {
                 frame.setSize(200,200);
                 fd.setVisible(true);
                 fileName = fd.getFile();
-                engine.save(fileName);
+                engine.save(fd.getDirectory(),fileName);
             }
         });
         loadButton.addActionListener(new ActionListener() {
@@ -283,7 +283,7 @@ public class Window {
                 frame.setSize(200,200);
                 fd.setVisible(true);
                 fileName = fd.getFile();
-                engine.load(fileName);
+                engine.load(fd.getDirectory(),fileName);
                 canvasPanel.repaint();
             }
         });
