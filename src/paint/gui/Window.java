@@ -145,6 +145,9 @@ public class Window {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 engine.selectShape(e.getPoint());
+                boolean selectionExists = engine.selectionExists();
+                deleteButton.setEnabled(selectionExists);
+                cloneButton.setEnabled(selectionExists);
                 canvasPanel.repaint();
             }
 
@@ -236,6 +239,8 @@ public class Window {
         deleteButton.addActionListener(e -> {
                 engine.deleteShape();
                 canvasPanel.repaint();
+                deleteButton.setEnabled(false);
+                cloneButton.setEnabled(false);
         });
         cloneButton.addActionListener(new ActionListener() {
             @Override
@@ -303,7 +308,7 @@ public class Window {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
                 if(engine.selectionExists())
-                   if (keyEvent.getKeyChar() == '\u007F')
+                    if (keyEvent.getKeyChar() == '\u007F')
                         deleteButton.doClick();
             }
         };
