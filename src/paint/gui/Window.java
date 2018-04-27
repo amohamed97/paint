@@ -298,5 +298,17 @@ public class Window {
                 }
             }
         });
+
+
+        KeyAdapter delKeyAdapter = new KeyAdapter(){
+            @Override
+            public void keyTyped(KeyEvent keyEvent) {
+                if (keyEvent.getKeyChar() == '\u007F'){
+                    deleteButton.doClick();
+                }
+            }
+        };
+
+        selectToggleButton.addKeyListener(delKeyAdapter);
     }
 }

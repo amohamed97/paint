@@ -30,44 +30,58 @@
               <text value="Select"/>
             </properties>
           </component>
+          <component id="e109a" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="ce91b" class="javax.swing.JToggleButton" binding="lineToggleButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="78" height="30"/>
-              <text value="Line"/>
+              <actionCommand value="Line"/>
+              <maximumSize width="20" height="27"/>
+              <minimumSize width="20" height="27"/>
+              <preferredSize width="20" height="27"/>
+              <text value="⏐"/>
             </properties>
           </component>
           <component id="680d7" class="javax.swing.JToggleButton" binding="rectangleToggleButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="78" height="30"/>
-              <text value="Rectangle"/>
+              <actionCommand value="Rectangle"/>
+              <selected value="false"/>
+              <text value="▭"/>
             </properties>
           </component>
           <component id="e8b70" class="javax.swing.JToggleButton" binding="ellipseToggleButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="78" height="30"/>
-              <text value="Ellipse"/>
+              <actionCommand value="Ellipse"/>
+              <maximumSize width="25" height="27"/>
+              <minimumSize width="25" height="27"/>
+              <preferredSize width="25" height="27"/>
+              <text value="⬭"/>
             </properties>
           </component>
           <component id="b74c8" class="javax.swing.JToggleButton" binding="squareToggleButton">
             <constraints/>
             <properties>
-              <text value="Square"/>
+              <actionCommand value="Square"/>
+              <text value="□"/>
             </properties>
           </component>
           <component id="c4316" class="javax.swing.JToggleButton" binding="circleToggleButton">
             <constraints/>
             <properties>
-              <text value="Circle"/>
+              <actionCommand value="Circle"/>
+              <text value="○"/>
             </properties>
           </component>
           <component id="da9b7" class="javax.swing.JToggleButton" binding="triangleToggleButton">
             <constraints/>
             <properties>
+              <actionCommand value="Triangle"/>
               <selected value="false"/>
-              <text value="Triangle"/>
+              <text value="◺"/>
             </properties>
           </component>
           <component id="73b62" class="javax.swing.JToolBar$Separator">
@@ -91,6 +105,10 @@
             <properties>
               <text value="Fill Color"/>
             </properties>
+          </component>
+          <component id="e284a" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
           </component>
           <component id="ae943" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
             <constraints/>
@@ -122,10 +140,14 @@
               <text value="Redo"/>
             </properties>
           </component>
+          <component id="3f552" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="8e419" class="javax.swing.JButton" binding="saveButton" default-binding="true">
             <constraints/>
             <properties>
-              <text value="save"/>
+              <text value="Save"/>
             </properties>
           </component>
           <component id="1381f" class="javax.swing.JButton" binding="loadButton" default-binding="true">
