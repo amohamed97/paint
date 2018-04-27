@@ -8,8 +8,6 @@ import paint.model.Shape;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.nio.file.Paths;
 
 public class Window {
@@ -275,9 +273,10 @@ public class Window {
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setSize(200,200);
                 fd.setVisible(true);
-                fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
-                if(fileName != null)
+                if(fd.getFile() != null) {
+                    fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
                     engine.save(fileName, canvasPanel.getBackground());
+                }
             }
         });
         loadButton.addActionListener(new ActionListener() {
@@ -289,8 +288,8 @@ public class Window {
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setSize(200,200);
                 fd.setVisible(true);
-                fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
-                if(fileName != null) {
+                if(fd.getFile() != null) {
+                    fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
                     canvasPanel.setBackground(engine.load(fileName));
                     redoButton.setEnabled(false);
                     undoButton.setEnabled(false);
@@ -303,9 +302,9 @@ public class Window {
         KeyAdapter delKeyAdapter = new KeyAdapter(){
             @Override
             public void keyTyped(KeyEvent keyEvent) {
-                if (keyEvent.getKeyChar() == '\u007F'){
-                    deleteButton.doClick();
-                }
+                if(engine.selectionExists())
+                   if (keyEvent.getKeyChar() == '\u007F')
+                        deleteButton.doClick();
             }
         };
 
