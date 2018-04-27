@@ -143,22 +143,21 @@ public class Engine {
         return commandIndex < commands.size();
     }
 
-    public void save(String fileName){
+    public void save(String fileName, Color background){
         s = new Save(shapes);
         if (fileName.endsWith(".json"))
-            s.saveJSON(fileName);
+            s.saveJSON(fileName, background);
         else
-            s.saveSVG(fileName);
+            s.saveSVG(fileName, background);
     }
 
-    public void load(String fileName) {
+    public Color load(String fileName) {
         commands.clear();
         commandIndex = 0;
-        load = new Load();
+        load = new Load(shapes);
         if (fileName.endsWith(".json"))
-            this.shapes = load.loadJSON(fileName);
-        else
-            this.shapes = load.loadSVG(fileName);
+            return load.loadJSON(fileName);
+        return load.loadSVG(fileName);
     }
 
     public boolean selectionExists(){

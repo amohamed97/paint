@@ -18,57 +18,54 @@ import java.util.ArrayList;
 
 public class Save {
     ArrayList<Shape> shapes;
-    JSONArray objArr;
+    JSONArray shapesObjectArr;
 
     public Save(ArrayList<Shape> shapes) {
         this.shapes = shapes;
     }
 
-    public void saveJSON( String fileName) {
-        JSONObject obj1 = new JSONObject();
-        objArr = new JSONArray();
+    private JSONArray colorJSONArray(Color color){
+        JSONArray array = new JSONArray();
+        array.add(color.getRed());
+        array.add(color.getGreen());
+        array.add(color.getBlue());
+        array.add(color.getAlpha());
+        return array;
+    }
+
+    public void saveJSON(String fileName, Color background) {
+        JSONObject rootObj = new JSONObject();
+        shapesObjectArr = new JSONArray();
         try(FileWriter file = new FileWriter(fileName)){
+            rootObj.put("background", colorJSONArray(background));
             for (int i = 0; i < shapes.size(); i++) {
                 Shape shape = shapes.get(i);
-                JSONObject obj = new JSONObject();
-                JSONArray colorArr = new JSONArray();
-                JSONArray fillColorArr = new JSONArray();
-                obj = shape.saveJSON();
+                JSONObject obj = shape.saveJSON();
 
-                Color color = shape.getColor();
-                colorArr.add(color.getRed());
-                colorArr.add(color.getGreen());
-                colorArr.add(color.getBlue());
-                colorArr.add(color.getAlpha());
-                obj.put("color",colorArr);
+                obj.put("color",colorJSONArray(shape.getColor()));
+                obj.put("fillcolor",colorJSONArray(shape.getFillColor()));
 
-                Color fillcolor = shape.getFillColor();
-                fillColorArr.add(fillcolor.getRed());
-                fillColorArr.add(fillcolor.getGreen());
-                fillColorArr.add(fillcolor.getBlue());
-                fillColorArr.add(fillcolor.getAlpha());
-                obj.put("fillcolor",fillColorArr);
-
-                objArr.add(obj);
+                shapesObjectArr.add(obj);
             }
-            obj1.put("shapes",objArr);
-            file.write(obj1.toJSONString());
-        } catch (Exception e) {
+            rootObj.put("shapes", shapesObjectArr);
+            file.write(rootObj.toJSONString());
+        } catch (IOException e) {
                 e.printStackTrace();
         }
     }
 
-    public void saveSVG(String filename){
+    public void saveSVG(String filename, Color background){
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         Document doc = SVGDOMImplementation.getDOMImplementation().createDocument(
                 SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
         Element root = doc.getDocumentElement();
-        shapes.forEach(s -> root.appendChild(s.saveSVG(doc)));
+        root.setAttribute("viewport-fill", Shape.colorRGBA(background));
 
+        shapes.forEach(s -> root.appendChild(s.saveSVG(doc)));
         SVGTranscoder transcoder = new SVGTranscoder();
         TranscoderInput in = new TranscoderInput(doc);
-        try{
-            TranscoderOutput out = new TranscoderOutput(new FileWriter(filename));
+        try(FileWriter file = new FileWriter(filename)){
+            TranscoderOutput out = new TranscoderOutput(file);
             transcoder.transcode(in, out);
         }catch(IOException | TranscoderException e){
             e.printStackTrace();

@@ -9,7 +9,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,27 +24,39 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
-import java.util.stream.Stream;
 
 public class Load {
-    ArrayList<Shape> shapes = new ArrayList<>();
-    Shape shape;
-    Color c;
-    public ArrayList loadJSON(String fileName) {
+    ArrayList<Shape> shapes;
+
+    public Load(ArrayList<Shape> shapes){
+        this.shapes = shapes;
+    }
+
+    public Color loadJSONColor(Object obj){
+        JSONArray arr = (JSONArray) obj;
+        return new Color(Integer.parseInt(arr.get(0).toString())
+                ,Integer.parseInt(arr.get(1).toString())
+                ,Integer.parseInt(arr.get(2).toString())
+                ,Integer.parseInt(arr.get(3).toString()));
+    }
+
+    public Color loadJSON(String fileName) {
+        shapes.clear();
         JSONParser parser = new JSONParser();
+        Color background = new Color(0,0,0,0);
         try{
             Object object = parser.parse(new FileReader(fileName));
             JSONObject objfile = (JSONObject) object;
+            background = loadJSONColor(objfile.get("background"));
             JSONArray objArr = (JSONArray) objfile.get("shapes");
             Iterator<JSONObject> iterator = objArr.iterator();
 
 
             while (iterator.hasNext()) {
+                Shape shape;
 
                 JSONObject obj = iterator.next();
                 JSONArray colorArray =(JSONArray) obj.get("color");
@@ -58,17 +69,6 @@ public class Load {
                     int width = Integer.parseInt(obj.get("Width").toString());
                     int height = Integer.parseInt(obj.get("Height").toString());
                     shape = new Ellipse(x, y,width,height);
-                    Color color = new Color(Integer.parseInt(colorArray.get(0).toString())
-                            ,Integer.parseInt(colorArray.get(1).toString())
-                    ,Integer.parseInt(colorArray.get(2).toString())
-                            ,Integer.parseInt(colorArray.get(3).toString()));
-
-                    Color fillcolor = new Color(Integer.parseInt(fillcolorArray.get(0).toString())
-                            ,Integer.parseInt(fillcolorArray.get(1).toString())
-                    ,Integer.parseInt(fillcolorArray.get(2).toString())
-                            ,Integer.parseInt(fillcolorArray.get(3).toString()));
-                    shape.setColor(color);
-                    shape.setFillColor(fillcolor);
                 }
                 else{
                     JSONArray xArr = (JSONArray) obj.get("X");
@@ -80,18 +80,10 @@ public class Load {
                         y[i] = Integer.parseInt(yArr.get(i).toString());
                     }
                     shape = new Polyline(x,y);
-                    Color color = new Color(Integer.parseInt(colorArray.get(0).toString())
-                            ,Integer.parseInt(colorArray.get(1).toString())
-                            ,Integer.parseInt(colorArray.get(2).toString())
-                            ,Integer.parseInt(colorArray.get(3).toString()));
-
-                    Color fillcolor = new Color(Integer.parseInt(fillcolorArray.get(0).toString())
-                            ,Integer.parseInt(fillcolorArray.get(1).toString())
-                            ,Integer.parseInt(fillcolorArray.get(2).toString())
-                            ,Integer.parseInt(fillcolorArray.get(3).toString()));
-                    shape.setColor(color);
-                    shape.setFillColor(fillcolor);
                 }
+
+                shape.setColor(loadJSONColor(obj.get("color")));
+                shape.setFillColor(loadJSONColor(obj.get("fillcolor")));
 
                 shapes.add(shape);
             }
@@ -100,10 +92,10 @@ public class Load {
         catch (IOException e) { e.printStackTrace(); }
         catch (ParseException e) { e.printStackTrace(); }
         catch (Exception e) { e.printStackTrace(); }
-        return shapes;
+        return background;
     }
 
-    private Color getColor(String rgba){
+    private Color loadSVGColor(String rgba){
         final Pattern pat = Pattern.compile("rgba\\((\\d+), *(\\d+), *(\\d+), *(\\d+)\\)");
         Matcher matcher = pat.matcher(rgba);
         matcher.find();
@@ -111,11 +103,13 @@ public class Load {
                 Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
     }
 
-    public ArrayList loadSVG(String filename){
-        ArrayList<Shape> shapes = new ArrayList<Shape>();
+    public Color loadSVG(String filename){
+        shapes.clear();
+        Color background = new Color(0,0,0,0);
         try{
             Element root = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName()).createDocument(
                     Paths.get(filename).toUri().toString()).getDocumentElement();
+            background = loadSVGColor(root.getAttribute("viewport-fill"));
             NodeList nodes = root.getChildNodes();
             final int nodesSize = nodes.getLength();
             for(int i = 0; i < nodesSize; ++i){
@@ -143,14 +137,14 @@ public class Load {
                         }
                         shape = new Polyline(x, y);
                     }else continue;
-                    shape.setColor(getColor(elem.getAttribute("stroke")));
-                    shape.setFillColor(getColor(elem.getAttribute("fill")));
+                    shape.setColor(loadSVGColor(elem.getAttribute("stroke")));
+                    shape.setFillColor(loadSVGColor(elem.getAttribute("fill")));
                     shapes.add(shape);
                 }
             }
         }catch (IOException e){
             e.printStackTrace();
         }
-        return shapes;
+        return background;
     }
 }

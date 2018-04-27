@@ -45,7 +45,7 @@ abstract public class Shape{
 
     abstract public JSONObject saveJSON();
 
-    private static String colorRGBA(Color color){
+    public static String colorRGBA(Color color){
         return String.format("rgba(%d, %d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue(),
                 color.getAlpha());
     }

@@ -126,7 +126,6 @@ public class Window {
                 newShape.setColor(brushColor);
                 newShape.setFillColor(fillColor);
                 engine.addShape(newShape);
-                redoButton.setEnabled(false);
                 canvasPanel.repaint();
             }
 
@@ -137,6 +136,7 @@ public class Window {
                     engine.checkpointAdd();
                 }
                 undoButton.setEnabled(true);
+                redoButton.setEnabled(false);
                 newShape = null;
             }
         };
@@ -277,7 +277,7 @@ public class Window {
                 fd.setVisible(true);
                 fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
                 if(fileName != null)
-                    engine.save(fileName);
+                    engine.save(fileName, canvasPanel.getBackground());
             }
         });
         loadButton.addActionListener(new ActionListener() {
@@ -291,7 +291,7 @@ public class Window {
                 fd.setVisible(true);
                 fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
                 if(fileName != null) {
-                    engine.load(fileName);
+                    canvasPanel.setBackground(engine.load(fileName));
                     redoButton.setEnabled(false);
                     undoButton.setEnabled(false);
                     canvasPanel.repaint();
