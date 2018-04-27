@@ -37,15 +37,15 @@ public class Save {
 
                 Color color = shape.getColor();
                 colorArr.add(color.getRed());
-                colorArr.add(color.getBlue());
                 colorArr.add(color.getGreen());
+                colorArr.add(color.getBlue());
                 colorArr.add(color.getAlpha());
                 obj.put("color",colorArr);
 
                 Color fillcolor = shape.getFillColor();
                 fillColorArr.add(fillcolor.getRed());
-                fillColorArr.add(fillcolor.getBlue());
                 fillColorArr.add(fillcolor.getGreen());
+                fillColorArr.add(fillcolor.getBlue());
                 fillColorArr.add(fillcolor.getAlpha());
                 obj.put("fillcolor",fillColorArr);
 
