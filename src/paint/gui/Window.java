@@ -126,6 +126,7 @@ public class Window {
                 newShape.setColor(brushColor);
                 newShape.setFillColor(fillColor);
                 engine.addShape(newShape);
+                redoButton.setEnabled(false);
                 canvasPanel.repaint();
             }
 
@@ -275,7 +276,8 @@ public class Window {
                 frame.setSize(200,200);
                 fd.setVisible(true);
                 fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
-                engine.save(fileName);
+                if(fileName != null)
+                    engine.save(fileName);
             }
         });
         loadButton.addActionListener(new ActionListener() {
@@ -288,8 +290,12 @@ public class Window {
                 frame.setSize(200,200);
                 fd.setVisible(true);
                 fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
-                engine.load(fileName);
-                canvasPanel.repaint();
+                if(fileName != null) {
+                    engine.load(fileName);
+                    redoButton.setEnabled(false);
+                    undoButton.setEnabled(false);
+                    canvasPanel.repaint();
+                }
             }
         });
     }
