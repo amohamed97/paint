@@ -1,6 +1,7 @@
 package paint.gui;
 
 import paint.controller.Engine;
+import paint.controller.ShapeFactory;
 import paint.model.Ellipse;
 import paint.model.Polyline;
 import paint.model.Shape;
@@ -17,7 +18,7 @@ public class Window {
 	private JButton backgroundColorButton;
 	private JButton brushColorButton;
 	public JPanel contentPane;
-    private Engine engine = new Engine();
+    static private Engine engine = new Engine();
     private Canvas canvasPanel;
     private JToggleButton selectToggleButton;
     private JButton deleteButton;
@@ -33,6 +34,7 @@ public class Window {
     private String actionCommand;
     private int startX, startY;
     String fileName;
+    ShapeFactory shapeFactory = new ShapeFactory();
 
 
     private Color brushColor = Color.black;
@@ -79,7 +81,7 @@ public class Window {
                 if(newShape != null)
                     engine.removeLastShape();
                 if(actionCommand.equals("Line"))
-                    newShape = new Polyline(new int[]{startX, endX}, new int[]{startY, endY});
+                    newShape = shapeFactory.getPolyline(new int[]{startX, endX}, new int[]{startY, endY});
                 else if(actionCommand.equals("Ellipse") || actionCommand.equals("Circle") ) {
                     int leftX = startX;
                     int topY = startY;
@@ -103,9 +105,9 @@ public class Window {
                             endY = (endX - leftX) + topY;
 
                     }
-                    newShape = new Ellipse(leftX, topY, endX-leftX, endY - topY);
+                    newShape = shapeFactory.getEllipse(leftX, topY, endX-leftX, endY - topY);
                 }else if(actionCommand.equals("Rectangle")) {
-                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
+                    newShape = shapeFactory.getPolyline(new int[]{startX, endX, endX, startX},
                             new int[]{startY, startY, endY, endY});
                 }else if(actionCommand.equals("Square")) {
 
@@ -114,10 +116,10 @@ public class Window {
                     }else if(endX - startX > endY - startY){
                         endX = (endY - startY) + startX;
                     }
-                    newShape = new Polyline(new int[]{startX, endX, endX, startX},
+                    newShape = shapeFactory.getPolyline(new int[]{startX, endX, endX, startX},
                             new int[]{startY, startY, endY, endY});
                 }else if(actionCommand.equals("Triangle")){
-                    newShape = new Polyline(new int[]{startX,endX , startX},
+                    newShape = shapeFactory.getPolyline(new int[]{startX,endX , startX},
                             new int[]{startY, endY, endY});
                 }else
                     throw new UnsupportedOperationException();

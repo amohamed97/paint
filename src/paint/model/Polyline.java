@@ -3,7 +3,6 @@ package paint.model;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

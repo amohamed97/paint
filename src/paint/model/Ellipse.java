@@ -12,12 +12,6 @@ public class Ellipse extends Shape {
     int x, y, width, height;
 
 
-    public Ellipse(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.width = 0;
-        this.height = 0;
-    }
 
     public Ellipse(int x, int y, int width, int height) {
         this.x = x;
