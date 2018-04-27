@@ -133,18 +133,26 @@ public class Engine {
         return commandIndex < commands.size();
     }
 
-    public void save(String dir,String fileName){
-        s = new Save(shapes);
-        s.saveJSON(dir+fileName);
-    }
-    public void load(String dir,String fileName){
-        load = new Load();
-        this.shapes = load.loadJSON(dir+fileName);
-//        for(Shape x : shapes){
-//            System.out.println(x.getPosition());
-//            System.out.println(x.getColor());
-//            System.out.println(x instanceof Polyline);
+    public void save(String fileName){
+        if(fileName != null) {
+            s = new Save(shapes);
+            if (fileName.endsWith(".json"))
+                s.saveJSON(fileName);
+            else
+                s.saveSVG(fileName);
         }
+    }
+
+    public void load(String fileName) {
+        load = new Load();
+        if (fileName != null) {
+            if (fileName.endsWith(".json"))
+                this.shapes = load.loadJSON(fileName);
+            else
+                this.shapes = load.loadSVG(fileName);
+        }
+    }
+
     public boolean selectionExists(){
         if(selected == -1)
             return false;

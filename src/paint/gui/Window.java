@@ -8,6 +8,9 @@ import paint.model.Shape;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.nio.file.Paths;
 
 public class Window {
 	private JToggleButton lineToggleButton;
@@ -267,11 +270,12 @@ public class Window {
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame();
                 FileDialog fd = new FileDialog(frame,"choose file",FileDialog.SAVE);
+                fd.setFilenameFilter((file, s) -> s.endsWith(".svg") || s.endsWith(".json"));
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setSize(200,200);
                 fd.setVisible(true);
-                fileName = fd.getFile();
-                engine.save(fd.getDirectory(),fileName);
+                fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
+                engine.save(fileName);
             }
         });
         loadButton.addActionListener(new ActionListener() {
@@ -279,11 +283,12 @@ public class Window {
             public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame();
                 FileDialog fd = new FileDialog(frame,"choose file",FileDialog.LOAD);
+                fd.setFilenameFilter((file, s) -> s.endsWith(".svg") || s.endsWith(".json"));
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setSize(200,200);
                 fd.setVisible(true);
-                fileName = fd.getFile();
-                engine.load(fd.getDirectory(),fileName);
+                fileName = Paths.get(fd.getDirectory(), fd.getFile()).toString();
+                engine.load(fileName);
                 canvasPanel.repaint();
             }
         });

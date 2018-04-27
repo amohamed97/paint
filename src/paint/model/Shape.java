@@ -1,6 +1,8 @@
 package paint.model;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.awt.*;
 
@@ -42,5 +44,17 @@ abstract public class Shape{
     abstract public boolean contains(Point point);
 
     abstract public JSONObject saveJSON();
+
+    private static String colorRGBA(Color color){
+        return String.format("rgba(%d, %d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue(),
+                color.getAlpha());
+    }
+
+    protected void saveSVGColors(Element elem){
+        elem.setAttribute("stroke", colorRGBA(color));
+        elem.setAttribute("fill", colorRGBA(fillColor));
+    }
+
+    abstract public Element saveSVG(Document doc);
 
 }
