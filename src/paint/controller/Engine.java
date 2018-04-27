@@ -47,7 +47,14 @@ public class Engine {
         shapes.add(shape);
     }
 
+
+    private void resetRedo(){
+        for(int i = commands.size() - 1; i >= commandIndex; --i)
+            commands.remove(i);
+    }
+
     public void checkpointAdd(){
+        resetRedo();
         int index = shapes.size() - 1;
         commands.add(commandIndex++, new Add(shapes.get(index), index));
     }
@@ -68,12 +75,14 @@ public class Engine {
     }
 
     public void moveShape(int diffX,int diffY , Point point){
+        resetRedo();
         if(selected !=-1 &&  shapes.get(selected).contains(point)) {
             shapes.get(selected).move(diffX, diffY);
         }
     }
 
     public void checkpointMove(int xDiff, int yDiff){
+        resetRedo();
         commands.add(commandIndex++, new Move(xDiff, yDiff, selected));
     }
 
@@ -81,6 +90,7 @@ public class Engine {
         shapes.get(selected).resize((int) point.getX(), (int) point.getY());
     }
     public void checkpointResize(int x,int y,int oldX,int oldY) {
+        resetRedo();
         commands.add(commandIndex++, new Resize(selected,x,y,oldX,oldY));
     }
 
@@ -134,23 +144,21 @@ public class Engine {
     }
 
     public void save(String fileName){
-        if(fileName != null) {
-            s = new Save(shapes);
-            if (fileName.endsWith(".json"))
-                s.saveJSON(fileName);
-            else
-                s.saveSVG(fileName);
-        }
+        s = new Save(shapes);
+        if (fileName.endsWith(".json"))
+            s.saveJSON(fileName);
+        else
+            s.saveSVG(fileName);
     }
 
     public void load(String fileName) {
+        commands.clear();
+        commandIndex = 0;
         load = new Load();
-        if (fileName != null) {
-            if (fileName.endsWith(".json"))
-                this.shapes = load.loadJSON(fileName);
-            else
-                this.shapes = load.loadSVG(fileName);
-        }
+        if (fileName.endsWith(".json"))
+            this.shapes = load.loadJSON(fileName);
+        else
+            this.shapes = load.loadSVG(fileName);
     }
 
     public boolean selectionExists(){
