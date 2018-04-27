@@ -1,6 +1,9 @@
 package paint.model;
 
+import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.json.simple.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -67,6 +70,18 @@ public class Ellipse extends Shape {
         obj.put("Height",height);
         obj.put("type", "Ellipse");
         return obj;
+    }
+
+    public Element saveSVG(Document doc) {
+        Element elem = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "ellipse");
+        int rx = width/2;
+        int ry = height/2;
+        elem.setAttribute("cx", Integer.toString(x + rx));
+        elem.setAttribute("cy", Integer.toString(y + ry));
+        elem.setAttribute("rx", Integer.toString(rx));
+        elem.setAttribute("ry", Integer.toString(ry));
+        saveSVGColors(elem);
+        return elem;
     }
 
     public void move(int xDiff, int yDiff) {

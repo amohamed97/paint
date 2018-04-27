@@ -131,16 +131,21 @@ public class Engine {
     }
 
     public void save(String fileName){
-        s = new Save(shapes);
-        s.saveJSON(fileName);
+        if(fileName != null) {
+            s = new Save(shapes);
+            if (fileName.endsWith(".json"))
+                s.saveJSON(fileName);
+            else
+                s.saveSVG(fileName);
+        }
     }
     public void load(String fileName){
         load = new Load();
-        this.shapes = load.loadJSON(fileName);
-//        for(Shape x : shapes){
-//            System.out.println(x.getPosition());
-//            System.out.println(x.getColor());
-//            System.out.println(x instanceof Polyline);
-//        }
+        if(fileName != null) {
+            if(fileName.endsWith(".json"))
+                this.shapes = load.loadJSON(fileName);
+            else
+                this.shapes = load.loadSVG(fileName);
+        }
     }
 }

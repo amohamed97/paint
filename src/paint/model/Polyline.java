@@ -1,10 +1,13 @@
 package paint.model;
 
+import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 
 public class Polyline extends Shape {
@@ -85,12 +88,16 @@ public class Polyline extends Shape {
         return obj;
     }
 
-//    public void resize(int x , int y){
-//        this.x[2]=x;
-//        this.y[2]=y;
-//        this.x[1]=x;
-//        this.y[3]=y;
-//    }
+    public Element saveSVG(Document doc){
+        Element elem = doc.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "polygon");
+        String points = "";
+        for(int i = 0; i < x.length; ++i){
+            points = String.format("%s %d,%d", points, x[i], y[i]);
+        }
+        elem.setAttribute("points", points);
+        saveSVGColors(elem);
+        return elem;
+    }
 
 
     public void resize(int x, int y){
