@@ -1,21 +1,17 @@
 package paint.controller;
 
-import fileManagement.Load;
-import fileManagement.Save;
+import fileManagement.*;
 import paint.controller.command.*;
-import paint.model.Polyline;
 import paint.model.Shape;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-//import fileManagement.Load;
 
 public class Engine {
     ArrayList<Shape> shapes = new ArrayList<Shape>();
     ArrayList<Command> commands = new ArrayList<Command>();
-    Save s;
-    Load load;
+    FileHandler fileHandler;
     int selected = -1;
     int commandIndex = 0;
 
@@ -144,20 +140,25 @@ public class Engine {
     }
 
     public void save(String fileName, Color background){
-        s = new Save(shapes);
-        if (fileName.endsWith(".json"))
-            s.saveJSON(fileName, background);
-        else
-            s.saveSVG(fileName, background);
+        if (fileName.endsWith(".json")) {
+            fileHandler = new JSONFileHandling(shapes);
+        }
+        else {
+            fileHandler = new SVGFileHandling(shapes);
+        }
+        fileHandler.save(fileName, background);
     }
 
     public Color load(String fileName) {
         commands.clear();
         commandIndex = 0;
-        load = new Load(shapes);
-        if (fileName.endsWith(".json"))
-            return load.loadJSON(fileName);
-        return load.loadSVG(fileName);
+        if (fileName.endsWith(".json")) {
+            fileHandler = new JSONFileHandling(shapes);
+            return fileHandler.load(fileName);
+        }else {
+            fileHandler = new SVGFileHandling(shapes);
+            return fileHandler.load(fileName);
+        }
     }
 
     public boolean selectionExists(){

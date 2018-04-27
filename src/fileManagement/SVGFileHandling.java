@@ -1,14 +1,12 @@
 package fileManagement;
 
-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
-import org.apache.batik.dom.svg.SVGOMElement;
-import org.apache.batik.dom.svg.SVGOMEllipseElement;
-import org.apache.batik.dom.svg.SVGOMPolygonElement;
+import org.apache.batik.dom.svg.*;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -19,80 +17,37 @@ import paint.model.Polyline;
 import paint.model.Shape;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Load {
+public class SVGFileHandling implements FileHandler {
     ArrayList<Shape> shapes;
 
-    public Load(ArrayList<Shape> shapes){
+    public SVGFileHandling(ArrayList<Shape> shapes) {
         this.shapes = shapes;
     }
 
-    public Color loadJSONColor(Object obj){
-        JSONArray arr = (JSONArray) obj;
-        return new Color(Integer.parseInt(arr.get(0).toString())
-                ,Integer.parseInt(arr.get(1).toString())
-                ,Integer.parseInt(arr.get(2).toString())
-                ,Integer.parseInt(arr.get(3).toString()));
-    }
+    @Override
+    public void save(String filename, Color background) {
+        String parser = XMLResourceDescriptor.getXMLParserClassName();
+        Document doc = SVGDOMImplementation.getDOMImplementation().createDocument(
+                SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
+        Element root = doc.getDocumentElement();
+        root.setAttribute("viewport-fill", Shape.colorRGBA(background));
 
-    public Color loadJSON(String fileName) {
-        shapes.clear();
-        JSONParser parser = new JSONParser();
-        Color background = new Color(0,0,0,0);
-        try{
-            Object object = parser.parse(new FileReader(fileName));
-            JSONObject objfile = (JSONObject) object;
-            background = loadJSONColor(objfile.get("background"));
-            JSONArray objArr = (JSONArray) objfile.get("shapes");
-            Iterator<JSONObject> iterator = objArr.iterator();
-
-
-            while (iterator.hasNext()) {
-                Shape shape;
-
-                JSONObject obj = iterator.next();
-                JSONArray colorArray =(JSONArray) obj.get("color");
-                JSONArray fillcolorArray =(JSONArray) obj.get("fillcolor");
-
-
-                if (obj.get("type").equals("Ellipse")) {
-                    int x = Integer.parseInt(obj.get("X").toString());
-                    int y = Integer.parseInt(obj.get("Y").toString());
-                    int width = Integer.parseInt(obj.get("Width").toString());
-                    int height = Integer.parseInt(obj.get("Height").toString());
-                    shape = new Ellipse(x, y,width,height);
-                }
-                else{
-                    JSONArray xArr = (JSONArray) obj.get("X");
-                    JSONArray yArr = (JSONArray) obj.get("Y");
-                    int[] x = new int[xArr.size()];
-                    int[] y = new int[yArr.size()];
-                    for (int i = 0; i < xArr.size(); i++) {
-                        x[i] = Integer.parseInt(xArr.get(i).toString());
-                        y[i] = Integer.parseInt(yArr.get(i).toString());
-                    }
-                    shape = new Polyline(x,y);
-                }
-
-                shape.setColor(loadJSONColor(obj.get("color")));
-                shape.setFillColor(loadJSONColor(obj.get("fillcolor")));
-
-                shapes.add(shape);
-            }
+        shapes.forEach(s -> root.appendChild(s.saveSVG(doc)));
+        SVGTranscoder transcoder = new SVGTranscoder();
+        TranscoderInput in = new TranscoderInput(doc);
+        try(FileWriter file = new FileWriter(filename)){
+            TranscoderOutput out = new TranscoderOutput(file);
+            transcoder.transcode(in, out);
+        }catch(IOException | TranscoderException e){
+            e.printStackTrace();
         }
-        catch (FileNotFoundException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
-        catch (ParseException e) { e.printStackTrace(); }
-        catch (Exception e) { e.printStackTrace(); }
-        return background;
     }
 
     private Color loadSVGColor(String rgba){
@@ -103,12 +58,13 @@ public class Load {
                 Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
     }
 
-    public Color loadSVG(String filename){
+    @Override
+    public Color load(String fileName) {
         shapes.clear();
         Color background = new Color(0,0,0,0);
         try{
             Element root = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName()).createDocument(
-                    Paths.get(filename).toUri().toString()).getDocumentElement();
+                    Paths.get(fileName).toUri().toString()).getDocumentElement();
             background = loadSVGColor(root.getAttribute("viewport-fill"));
             NodeList nodes = root.getChildNodes();
             final int nodesSize = nodes.getLength();
