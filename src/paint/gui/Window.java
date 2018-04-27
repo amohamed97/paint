@@ -213,7 +213,9 @@ public class Window {
             actionCommand = e.getActionCommand();
             if(actionCommand.equals("Select")){
                 canvasPanel.setCursor(Cursor.getDefaultCursor());
+                canvasPanel.removeMouseListener(selector);
                 canvasPanel.addMouseListener(selector);
+                canvasPanel.removeMouseMotionListener(selector);
                 canvasPanel.addMouseMotionListener(selector);
                 canvasPanel.removeMouseMotionListener(shaper);
                 canvasPanel.removeMouseListener(shaper);
