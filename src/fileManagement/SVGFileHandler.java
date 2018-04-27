@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SVGFileHandling implements FileHandler {
+public class SVGFileHandler implements FileHandler {
     ArrayList<Shape> shapes;
 
-    public SVGFileHandling(ArrayList<Shape> shapes) {
+    public SVGFileHandler(ArrayList<Shape> shapes) {
         this.shapes = shapes;
     }
 

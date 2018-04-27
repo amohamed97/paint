@@ -141,10 +141,10 @@ public class Engine {
 
     public void save(String fileName, Color background){
         if (fileName.endsWith(".json")) {
-            fileHandler = new JSONFileHandling(shapes);
+            fileHandler = new JSONFileHandler(shapes);
         }
         else {
-            fileHandler = new SVGFileHandling(shapes);
+            fileHandler = new SVGFileHandler(shapes);
         }
         fileHandler.save(fileName, background);
     }
@@ -153,10 +153,10 @@ public class Engine {
         commands.clear();
         commandIndex = 0;
         if (fileName.endsWith(".json")) {
-            fileHandler = new JSONFileHandling(shapes);
+            fileHandler = new JSONFileHandler(shapes);
             return fileHandler.load(fileName);
         }else {
-            fileHandler = new SVGFileHandling(shapes);
+            fileHandler = new SVGFileHandler(shapes);
             return fileHandler.load(fileName);
         }
     }

@@ -15,12 +15,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-public class JSONFileHandling implements FileHandler{
+public class JSONFileHandler implements FileHandler{
 
     ArrayList<Shape> shapes;
     JSONArray shapesObjectArr;
 
-    public JSONFileHandling(ArrayList<Shape> shapes) {
+    public JSONFileHandler(ArrayList<Shape> shapes) {
         this.shapes = shapes;
     }
 
